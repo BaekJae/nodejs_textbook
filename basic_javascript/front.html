@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script><!--axios library 호출(설치X)-->
+    <script>
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+        /*axios.get('https://www.zerocho.com/api/get') //get요청
+            .then((result) => {
+                console.log(result);
+                console.log(result.data); // {}
+            })
+            .catch((error)=>{
+                console.error(error);
+            })*/
+
+        (async () => { //get요청(async, await)
+            try{
+                const result = await axios.get('https://www.zerocho.com/api/get');
+                console.log(result);
+                console.log(result.data); // {}
+            } catch(error){
+                console.error(error);
+            }
+        })();
+
+        (async () => {
+            try{
+                //두 번째 인수로 데이터를 넣어 보낸다
+                const result = await axios.post('https://www.zerocho.com/api/post/json',{
+                    headers:{
+                        "Access-Control-Allow-Origin": "*",
+                    },
+                    data:{
+                        name: "zerocho",
+                        birth: "1994"},
+                });
+                console.log(result);
+                console.log(result.data); //{}
+            }catch(error){
+                console.error(error);
+            }
+        })();
+    </script>
+</body>
+</html>

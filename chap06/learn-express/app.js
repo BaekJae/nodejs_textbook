@@ -7,6 +7,8 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 
 dotenv.config();
+const indexRouter = require('./routes');
+const userRouter = require('./routes/user');
 const app = express();
 app.set('port', process.env.PORT || 4000);
 
@@ -54,6 +56,13 @@ app.use(session({
 //express-session은 인수로 세션에 대한 설정을 받는다.
 //store 옵션 -> 해당 옵션이 없으면 서버를 재시작하면 메모리가 초기화되어 세션이 모두 사라진다.(현재 - 메모리에 세션 저장)
 //store에 데이터베이스를 연결하여 세션을 유지하는 것이 좋다(보통 레디스가 자주 쓰인다)
+
+app.use('/', indexRouter);
+app.use('/user', userRouter);
+
+app.use((req, res, next) => {
+    res.status(404).send('Not Found');
+});
 
 const multer = require('multer');
 const fs = require('fs');

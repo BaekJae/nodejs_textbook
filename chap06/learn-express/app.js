@@ -5,12 +5,24 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
+const nunjucks = require('nunjucks');
 
 dotenv.config();
 const indexRouter = require('./routes');
 const userRouter = require('./routes/user');
 const app = express();
 app.set('port', process.env.PORT || 4000);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+/*app.set('view engine', 'html');
+//넌적스 기준 html을 그대로 써도 상관없으나, 넌적스임을 구분하려면 확장자로 njk를 쓰면 된다.
+//단 이때는 view engine도 njk로 바꿔야 한다.
+
+nunjucks.configure('views', {
+    express: app, //express속성에 app객체 연결
+    watch: true, //watch옵션이 true이면 html파일이 변경될 때 템플릿 엔진을 다시 렌더링
+});*/
+//첫 번째 인수로 views폴더의 경로, 두 번째 인수로 옵션
 
 //미들웨어와 일반 요청의 차이 => next가 인자로 존재하느냐 존재하지않느냐
 app.use(morgan('dev'));
@@ -61,7 +73,18 @@ app.use('/', indexRouter);
 app.use('/user', userRouter);
 
 app.use((req, res, next) => {
-    res.status(404).send('Not Found');
+    const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`)
+    error.status = 404;
+    next(error);
+});
+app.use((err, req, res, next) => {
+    res.locals.message = err.message;
+    res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
+    //에러 처리 미들웨어는 err이 인자로 있다.
+    /*console.error(err);
+    res.status(500).send(err.message);*/
 });
 
 const multer = require('multer');
@@ -120,11 +143,7 @@ app.get('/', (req, res, next) => {
     throw new Error('에러는 에러처리 미들웨어로');
 });
 
-app.use((err, req, res, next) => {
-    //에러 처리 미들웨어는 err이 인자로 있다.
-    console.error(err);
-    res.status(500).send(err.message);
-});
+
 app.get('/', (req, res) => {
     //res.send('Hello, Express');
     //해당 문장을 응답

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>multipart</title>
+</head>
+<body>
+<form id="form" action="/upload" method="POST" enctype="multipart/form-data">
+    <!--<input type="file" name="many" multiple/>--> <!-- HTML의 input태그에는 여러 개를 첨부하면 multiple을 쓰면 된다 -->
+    <input type="file" name="image1" />
+    <input type="file" name="image2" /> <!--업로드 앱을 짤 때 input 태그의 이름을 각각 적는다-->
+    <!--업로드 결과도 req.files.image1, req.files.image2에 각각 들어있다-->
+    <!--여러 파일을 업로드 할때는 req.files배열에 들어있다 -->
+    <!--파일을 하나만 업로드 하는 경우에는 single미들웨어 사용-->
+    <input type="text" name="title" />
+    <button type="submit">업로드</button>
+</form>
+</body>
+</html>

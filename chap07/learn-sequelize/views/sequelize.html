@@ -13,7 +13,7 @@
         <form id="user-form">
             <fieldset>
                 <legend>사용자 등록</legend>
-                <div><input id="username" type="text" placehodler="이름"></div>
+                <div><input id="username" type="text" placeholder="이름"></div>
                 <div><input id="age" type="text" placeholder="나이"></div>
                 <div><input id="married" type="checkbox"><label for="married">결혼여부</label></div>
                 <button type="submit">등록</button>
@@ -36,7 +36,7 @@
                 <td>{{user.id}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.age}}</td>
-                <td>{{'기혼' if user married else '미혼'}}</td>
+                <td>{{'기혼' if user.married else '미혼'}}</td>
             </tr>
             {% endfor %}
         </tbody>

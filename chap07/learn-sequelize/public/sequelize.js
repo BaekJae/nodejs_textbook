@@ -1,7 +1,7 @@
 //사용자 이름을 눌렀을 때 댓글 로딩
 document.querySelectorAll('#user-list tr').forEach((el) => {
     el.addEventListener('click', function() {
-        const id = el.querySelector('id').textContent;
+        const id = el.querySelector('td').textContent;
         getComment(id);
     });
 });
@@ -18,7 +18,7 @@ async function getUser(){
             const row = document.createElement('tr');
             row.addEventListener('click', () => {
                 getComment(user.id);
-            })
+            });
             //로우 셀 추가
             let td = document.createElement('td');
             td.textContent = user.id;

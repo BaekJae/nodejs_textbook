@@ -7,9 +7,14 @@ const router = express.Router();
 // POST /comments
 router.post('/', async (req, res, next) => {
     try{
-        console.log(req.body);
+        let targetUser = await User.findOne({
+            attributes: ['id'],
+            where: {
+                name: req.body.id,
+            }
+        });
         const comment = await Comment.create({
-            commenter: req.body.id,
+            commenter: targetUser.dataValues.id,
             comment: req.body.comment,
         });
         console.log(comment);

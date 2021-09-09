@@ -18,4 +18,5 @@ const commentSchema = new Schema({
     },
 });
 
-module.exports = mongoose.model( 'Comment ', commentSchema);
+//띄어쓰기 조심! 띄어쓰기 잘못하면 오류 발생
+module.exports = mongoose.model( 'Comment', commentSchema);

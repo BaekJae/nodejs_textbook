@@ -48,7 +48,7 @@ async function getComment(id){
         tbody.innerHTML = '';
         comments.map(function (comment) {
             //로우 셀 추가
-            const row = document.getElementById('tr');
+            const row = document.createElement('tr');
             let td = document.createElement('td');
             td.textContent = comment._id;
             row.appendChild(td);
@@ -73,6 +73,7 @@ async function getComment(id){
                 }
             });
             const remove = document.createElement('button');
+            remove.textContent ='삭제';
             remove.addEventListener('click', async() => { //삭제 클릭 시
                 try{
                     await axios.delete(`/comments/${comment._id}`);
@@ -121,6 +122,7 @@ document.getElementById('user-form').addEventListener('submit', async(e) => {
 //댓글 등록 시
 document.getElementById('comment-form').addEventListener('submit', async(e) => {
     e.preventDefault();
+    //const id = await db.users.find({ name: e.target.userid.value }, { _id: 1 });
     const id = e.target.userid.value;
     const comment = e.target.comment.value;
     if(!id){
@@ -130,8 +132,8 @@ document.getElementById('comment-form').addEventListener('submit', async(e) => {
         return alert('댓글을 입력하세요');
     }
     try{
-        await axios.post('/comments', { id, comment });
-        getComment(id);
+        let targetUser = await axios.post('/comments', { id, comment });
+        getComment(targetUser.data.commenter._id);
     } catch(err){
         console.error(err);
     }

@@ -1,16 +1,21 @@
 const express = require('express');
 const Comment = require('../schemas/comment');
+const User = require('../schemas/user');
 
 const router = express.Router();
 
 router.post('/', async(req, res, next) => {
     try{
+        let targetUser = await User.find({
+            name: req.body.id,
+        }, {
+            _id: 1,
+        });
         const comment = await Comment.create({
-            commenter: req.body.id,
+            commenter: targetUser[0]._id,
             comment: req.body.comment,
         });
-        console.log(comment);
-        const result = await Comment.populate(comment, { path: 'commenter '});
+        const result = await Comment.populate(comment, { path: 'commenter' });
         res.status(201).json(result);
     } catch (err) {
         console.error(err);

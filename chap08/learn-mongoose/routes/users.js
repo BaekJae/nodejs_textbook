@@ -21,7 +21,6 @@ router.route('/')
                 age: req.body.age,
                 married: req.body.married,
             });
-            console.log(user);
             res.status(201).json(user);
         } catch(err){
             console.error(err);

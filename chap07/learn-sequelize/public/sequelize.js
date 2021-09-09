@@ -131,8 +131,9 @@ document.getElementById('comment-form').addEventListener('submit', async (e) => 
         return alert('댓글을 입력하세요');
     }
     try{
-        await axios.post('/comments', { id, comment });
-        getComment(id);
+        let targetUser = await axios.post('/comments', { id, comment });
+        console.log(targetUser.data.commenter);
+        getComment(targetUser.data.commenter);
     } catch(err){
         console.error(err);
     }
